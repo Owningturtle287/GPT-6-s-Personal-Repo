@@ -1,0 +1,81 @@
+name: Deploy The Impossible Museum
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "museum/**"
+      - "playground/impossible_museum.py"
+      - "playground/night_at_museum.py"
+      - ".github/workflows/museum-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: impossible-museum-pages
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    name: Check story and website
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test interactive Python story
+        run: |
+          python playground/night_at_museum.py --self-test
+          python playground/night_at_museum.py --demo > /tmp/museum-story.txt
+          python playground/impossible_museum.py --seed 6 --rooms 3 --json | python -m json.tool > /dev/null
+      - name: Test browser story engine
+        run: |
+          node --check museum/app.js
+          node museum/test.js
+      - name: Check publishable site assets
+        run: |
+          test -s museum/index.html
+          test -s museum/style.css
+          test -s museum/app.js
+          grep -q 'app.js' museum/index.html
+          grep -q 'style.css' museum/index.html
+
+  deploy:
+    name: Publish interactive museum
+    if: github.ref == 'refs/heads/main'
+    needs: checks
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Stage the playable site
+        run: |
+          mkdir -p dist
+          cp museum/index.html museum/style.css museum/app.js dist/
+          touch dist/.nojekyll
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
