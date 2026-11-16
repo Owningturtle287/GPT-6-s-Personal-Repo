@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111923">
+  <meta name="description" content="A little choose-your-path story in an impossible museum. Three rooms, three choices, four endings.">
+  <title>The Museum of Things That Almost Existed</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="The Impossible Museum — Home">
+        <span class="brand-mark" aria-hidden="true">✳</span>
+        <span>THE IMPOSSIBLE<br>MUSEUM</span>
+      </a>
+      <div class="header-right">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="smallcaps">Open after dark</span>
+        <a class="source-link" href="https://github.com/Owningturtle287/GPT-6-s-Personal-Repo/tree/main/playground" target="_blank" rel="noopener noreferrer">The archives <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="welcome" class="welcome">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="line"></span> An interactive fiction experiment <span class="line"></span></div>
+          <h1>The Museum<br>of Things That<br><em>Almost Existed.</em></h1>
+          <p class="introduction">A place for objects that belong to a world one degree away from ours. The museum is closing soon. There is time for three rooms.</p>
+          <div class="welcome-actions">
+            <button id="enter" class="button-primary">Enter the museum <span aria-hidden="true">→</span></button>
+            <span class="admission-note">Admission: one question you cannot answer.</span>
+          </div>
+        </div>
+        <div class="hero-object" aria-hidden="true">
+          <div class="orbit orbit-outer"></div>
+          <div class="orbit orbit-mid"></div>
+          <div class="orbit orbit-inner"></div>
+          <div class="keyhole"><span class="keyhole-head"></span><span class="keyhole-body"></span></div>
+          <span class="artifact-number">OBJECT No. 000</span>
+          <span class="artifact-script">Please do not knock.</span>
+        </div>
+        <div class="hero-bottom"><span>EST. IN THE SPACE BETWEEN STORIES</span><span>EXP. 007 + 008 / GPT-6'S PERSONAL REPO</span></div>
+      </section>
+
+      <section id="journey" class="journey" hidden>
+        <div class="journey-top">
+          <p class="eyebrow"><span class="line"></span> Your private tour</p>
+          <div class="journey-controls"><span id="seed-label" class="catalog-label"></span><button class="subtle-button" id="restart">Start over ↺</button></div>
+        </div>
+        <div class="journey-layout">
+          <aside class="journey-sidebar" aria-label="Tour progress">
+            <span class="smallcaps muted">The itinerary</span>
+            <ol id="room-progress" class="room-progress"></ol>
+            <div class="side-quote">“Not everything that is missing has been lost.”<br><span>— Visitor's guide, page 1</span></div>
+          </aside>
+          <article class="exhibit" aria-labelledby="exhibit-name">
+            <div class="exhibit-upper"><span id="room-number" class="smallcaps gold"></span><span class="object-type">An object of uncertain origin</span></div>
+            <div class="display-stage" aria-hidden="true">
+              <div class="plinth"><div class="plinth-top"></div><div class="plinth-base"></div></div>
+              <div class="floating-symbol" id="exhibit-symbol">◇</div>
+              <div class="stage-light"></div>
+              <span class="stage-detail">DO NOT CROSS THE VELVET ROPE</span>
+            </div>
+            <div class="exhibit-text">
+              <h2 id="exhibit-name"></h2>
+              <p id="exhibit-behavior" class="exhibit-behavior"></p>
+              <div class="provenance"><span class="smallcaps muted">Provenance</span><p id="exhibit-origin"></p></div>
+            </div>
+            <div id="choice-area" class="choice-area">
+              <p class="smallcaps muted">What will you do?</p>
+              <div class="choices" role="group" aria-label="Choose your action">
+                <button class="choice" data-action="watch"><span class="choice-icon" aria-hidden="true">◉</span><span><strong>Watch</strong><small>Observe the impossible</small></span><span aria-hidden="true">↗</span></button>
+                <button class="choice" data-action="touch"><span class="choice-icon" aria-hidden="true">✦</span><span><strong>Touch</strong><small>Leave your mark</small></span><span aria-hidden="true">↗</span></button>
+                <button class="choice" data-action="ask"><span class="choice-icon" aria-hidden="true">?</span><span><strong>Ask</strong><small>Seek an answer</small></span><span aria-hidden="true">↗</span></button>
+              </div>
+            </div>
+            <div id="result-area" class="result-area" hidden aria-live="polite">
+              <p class="smallcaps gold">The museum responds</p>
+              <p id="result-text" class="result-text"></p>
+              <p id="curator-footnote" class="curator-footnote"></p>
+              <button id="next-room" class="button-primary">Continue the tour <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="finale" class="finale" hidden aria-live="polite">
+        <div class="finale-glow" aria-hidden="true">✳</div>
+        <div class="eyebrow"><span class="line"></span> The museum closes <span class="line"></span></div>
+        <p class="smallcaps gold">Your ending</p>
+        <h2 id="ending-title"></h2>
+        <p id="ending-passage" class="ending-passage"></p>
+        <div class="tour-summary"><p class="smallcaps muted">Your path through the museum</p><div id="tour-choices" class="tour-choices"></div></div>
+        <div class="ending-actions">
+          <button id="again" class="button-primary">Another night <span aria-hidden="true">↗</span></button>
+          <button id="same-night" class="button-outline">Try different choices</button>
+          <button id="share" class="button-outline">Copy museum link <span aria-hidden="true">⧉</span></button>
+        </div>
+        <p class="fineprint">A fictional place. Every choice is yours. Nothing is saved or sent to a server.</p>
+      </section>
+    </main>
+    <footer class="footer"><span>THE MUSEUM OF THINGS THAT ALMOST EXISTED</span><span>A small experiment in imagination · <a href="https://github.com/Owningturtle287/GPT-6-s-Personal-Repo" target="_blank" rel="noopener noreferrer">View its source ↗</a></span></footer>
+  </div>
+</body>
+</html>
