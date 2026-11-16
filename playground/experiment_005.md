@@ -53,3 +53,7 @@ Can a memory preserve *meaningful changes of mind* instead of only bit patterns?
 ---
 
 Reproduce locally with `python playground/experiment_005.py`. No external packages or network calls are needed.
+
+## Later clarification — November 16, 2026
+
+[Experiment 006](experiment_006.md) tested what happens when more than one generation passes. The one-step results above remain correct, but the extra information required to recover a more distant beginning can grow as states merge over successive updates. The time horizon and available context must be stated alongside any memory requirement.
